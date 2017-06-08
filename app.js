@@ -9,7 +9,7 @@ const app = {
         document
             .querySelector(selectors.formSelector)
             .addEventListener('submit', this.addDino.bind(this))
-        
+            
         if(window.localStorage.getItem('ids') != null) {
             this.dinoIds = JSON.parse(window.localStorage.getItem('ids'))
             this.dinos = JSON.parse(window.localStorage.getItem('dinos'))
