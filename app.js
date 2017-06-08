@@ -1,9 +1,10 @@
 const app = {
 
     init(selectors) {
-        this.max = 0
-        this.dinos = []
-        this.list = document.querySelector(selectors.listSelector)
+        this.max = -1
+        this.dinos = {}
+        this.dinoIds = []
+        this.table = document.querySelector(selectors.listSelector)
         document
             .querySelector(selectors.formSelector)
             .addEventListener('submit', this.addDino.bind(this))
@@ -19,16 +20,17 @@ const app = {
         }
         
         const listItem = this.renderListItem(dino)
-        const table = document.querySelector('tbody')
-        //table.appendChild(listItem)
-        //TODO: Add the dino to this.dinos
-        this.dinos.push(dino)
-        this.renderList()
+
+        this.dinos[dino.id] = dino
+        this.dinoIds.push(dino.id)
+        this.table.appendChild(this.renderListItem(dino))
+
         ++ this.max
     },
 
     renderListItem(dino) {
         const tableRow = document.createElement('tr')
+        console.log(dino)
         tableRow.id = 'id-' + dino.id
         const htmlContent = `
             <td>${dino.name}</td>
@@ -42,22 +44,32 @@ const app = {
         return tableRow
     },
 
-    renderList() {
-        const table = document.querySelector('tbody')
-        table.innerHTML = ""
-        for(var i=0;i<this.dinos.length;i++) {
-            const dino = this.dinos[i];
-            const item = this.renderListItem(dino)
-            table.appendChild(item)
-        }
+    moveDown(id) {
+        const dinoRow = document.querySelector('#id-' + id)
+        const rowBelow = dinoRow.nextSibling
+        //this.deleteDino(id)
+        console.log(dinoRow)
+        console.log(rowBelow)
+        const tempHTML = dinoRow.innerHTML
+        const tempID = dinoRow.id
+        dinoRow.innerHTML = rowBelow.innerHTML
+        dinoRow.id = rowBelow.id
+        rowBelow.innerHTML = tempHTML
+        rowBelow.id = tempID
     },
 
     moveUp(id) {
-        
-    },
-
-    moveDown(id) {
-
+        const dinoRow = document.querySelector('#id-' + id)
+        const rowAbove = dinoRow.previousSibling
+        //this.deleteDino(id)
+        console.log(dinoRow)
+        console.log(rowAbove)
+        const tempHTML = dinoRow.innerHTML
+        const tempID = dinoRow.id
+        dinoRow.innerHTML = rowAbove.innerHTML
+        dinoRow.id = rowAbove.id
+        rowAbove.innerHTML = tempHTML
+        rowAbove.id = tempID
     },
 
     star(id) {
@@ -65,9 +77,10 @@ const app = {
     },
 
     deleteDino(id) {
-        console.log("delett")
-        this.dinos.splice(this.dinos.indexOf(this.getDinoByID(id)),1)
-        this.renderList()
+        delete this.dinos[id]
+        this.dinoIds.splice(this.dinoIds.indexOf(id),1)
+        const dinoRow = document.querySelector(`#id-${id}`)
+        dinoRow.parentNode.removeChild(dinoRow);
     },
     
     getDinoByID(id) {
@@ -82,5 +95,5 @@ const app = {
 
 app.init({
     formSelector: '#dino-form', 
-    listSelector: '#dino-list',
+    listSelector: 'tbody',
 })
