@@ -9,6 +9,19 @@ const app = {
             .querySelector(selectors.formSelector)
             .addEventListener('submit', this.addDino.bind(this))
         
+        if(window.localStorage.getItem('ids') != null) {
+            this.dinoIds = JSON.parse(window.localStorage.getItem('ids'))
+            this.dinos = JSON.parse(window.localStorage.getItem('dinos'))
+            this.max = parseInt(window.localStorage.getItem('max'))
+        }
+
+        if(this.dinoIds.length > 0) {
+            for(let i=0;i<this.dinoIds.length;i++) {
+                console.log(i)
+                const id = this.dinoIds[i]
+                this.table.appendChild(this.renderListItem(this.dinos[id]))
+            }
+        }
     },
 
     addDino(event) {
@@ -16,7 +29,7 @@ const app = {
         const dino = {
             id: this.max + 1,
             name: event.target.dinoName.value,
-            domObj: null
+            favorite: '',
         }
         
         const listItem = this.renderListItem(dino)
@@ -26,12 +39,17 @@ const app = {
         this.table.appendChild(this.renderListItem(dino))
 
         ++ this.max
+
+        localStorage.setItem('dinos',JSON.stringify(this.dinos))
+        localStorage.setItem('ids',JSON.stringify(this.dinoIds))
+        localStorage.setItem('max',this.max.toString())
     },
 
     renderListItem(dino) {
         const tableRow = document.createElement('tr')
         console.log(dino)
         tableRow.id = 'id-' + dino.id
+        tableRow.setAttribute('class',dino.favorite)
         const htmlContent = `
             <td>${dino.name}</td>
             <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
@@ -56,6 +74,7 @@ const app = {
         dinoRow.id = rowBelow.id
         rowBelow.innerHTML = tempHTML
         rowBelow.id = tempID
+        this.updateIDsList()
     },
 
     moveUp(id) {
@@ -70,26 +89,51 @@ const app = {
         dinoRow.id = rowAbove.id
         rowAbove.innerHTML = tempHTML
         rowAbove.id = tempID
+        this.updateIDsList()
     },
 
     star(id) {
-
+        const dinoRow = document.querySelector('#id-' + id)
+        const dinoClass = dinoRow.getAttribute('class')
+        if(dinoClass.includes('star')) {
+            dinoRow.setAttribute('class',dinoClass.replace('star',''))
+            this.dinos[id].favorite = ''
+        } else {
+            dinoRow.setAttribute('class',dinoClass + ' star')
+            this.dinos[id].favorite = 'star'
+        }
+        localStorage.setItem('dinos',JSON.stringify(this.dinos))
     },
 
     deleteDino(id) {
         delete this.dinos[id]
         this.dinoIds.splice(this.dinoIds.indexOf(id),1)
         const dinoRow = document.querySelector(`#id-${id}`)
-        dinoRow.parentNode.removeChild(dinoRow);
+        dinoRow.parentNode.removeChild(dinoRow)
+        this.updateIDsList()
     },
     
     getDinoByID(id) {
-        for(var i=0;i<this.dinos.length;i++) {
+        for(let i=0;i<this.dinos.length;i++) {
             const dino = this.dinos[i]
             if(parseInt(dino.id) === id) {
                 return dino
             }
         }
+    },
+
+    updateIDsList() {
+        let newIds = []
+        for(let i=1;i<this.table.childNodes.length;i++) {
+            const child = this.table.childNodes[i]
+            console.log("child")
+            console.log(child)
+            const idStr = child.id.replace('id-','')
+            const id = parseInt(idStr)
+            newIds.push(id)
+        }
+        this.dinoIds = newIds
+        localStorage.setItem('ids',JSON.stringify(this.dinoIds))
     }
 }
 
