@@ -29,7 +29,23 @@ const app = {
         const item = document.createElement('li')
         item.textContent = dino.name
         return item
-    }
+    },
+
+    moveUp(id) {
+
+    },
+
+    moveDown(id) {
+
+    },
+
+    star(id) {
+
+    },
+
+    delete(id) {
+
+    },
 }
 
 app.init({
