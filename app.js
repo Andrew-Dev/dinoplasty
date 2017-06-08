@@ -6,6 +6,8 @@ const app = {
         this.dinoIds = []
         this.table = document.querySelector(selectors.listSelector)
         this.form = document.querySelector(selectors.formSelector)
+        this.template = document.querySelector(selectors.templateSelector)
+
         document
             .querySelector(selectors.formSelector)
             .addEventListener('submit', this.addDino.bind(this))
@@ -36,7 +38,7 @@ const app = {
         const listItem = this.renderListItem(dino)
 
         this.dinos[dino.id] = dino
-        this.dinoIds.push(dino.id)
+        this.dinoIds.unshift(dino.id)
         this.table.insertBefore(listItem, this.table.firstChild)
 
         this.form.dinoName.value = null
@@ -49,7 +51,7 @@ const app = {
     },
 
     renderListItem(dino) {
-        const tableRow = document.createElement('tr')
+        const tableRow = //document.createElement('tr')
         console.log(dino)
         tableRow.id = 'id-' + dino.id
         tableRow.dataset.id = dino.id
@@ -68,8 +70,11 @@ const app = {
 
     moveDown(id) {
         const dinoRow = document.querySelector('#id-' + id)
+        console.log(dinoRow)
         const rowBelow = dinoRow.nextSibling
-        if(rowBelow == null) {
+        console.log("row below")
+        console.log(rowBelow)
+        if(rowBelow == null || rowBelow.id.includes('text') || rowBelow == undefined) {
             return
         }
         //this.deleteDino(id)
@@ -86,7 +91,9 @@ const app = {
 
     moveUp(id) {
         const dinoRow = document.querySelector('#id-' + id)
+        console.log(dinoRow)
         const rowAbove = dinoRow.previousSibling
+        console.log(rowAbove)
         if(rowAbove == null || rowAbove.id.includes('text')) {
             return
         }
@@ -136,9 +143,14 @@ const app = {
     updateIDsList() {
         let newIds = []
         for(let i=1;i<this.table.childNodes.length;i++) {
-            const child = this.table.childNodes[i]
             console.log("child")
+            const child = this.table.childNodes[i]
             console.log(child)
+            console.log("child id",child.id)
+            if(child.id.includes('text')) {
+                continue
+            }
+            
             const idStr = child.id.replace('id-','')
             const id = parseInt(idStr)
             newIds.push(id)
@@ -151,4 +163,5 @@ const app = {
 app.init({
     formSelector: '#dino-form', 
     listSelector: 'tbody',
+    templateSelector: '.template'
 })

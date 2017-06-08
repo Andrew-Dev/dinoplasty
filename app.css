@@ -1,3 +1,7 @@
 .star {
     background-color: #aacbff !important;
 }
+
+.template {
+    visibility: hidden;
+}
