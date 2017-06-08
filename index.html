@@ -36,15 +36,16 @@
                         
                     </thead>
                     <tbody>
+                        <tr class="dino template">
+                            <td class="dino-name"></td>
+                            <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
+                            <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
+                            <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
+                            <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
+                        </tr>
                     </tbody>
                 </table>
-                <tr class="dino template">
-                    <td class="dino-name"></td>
-                    <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
-                    <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
-                    <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
-                    <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
-                </tr>
+                
             </div>
         </div>
         <script src="app.js"></script>

@@ -51,7 +51,11 @@ const app = {
     },
 
     renderListItem(dino) {
-        const tableRow = //document.createElement('tr')
+        const tableRow = this.template.cloneNode(true) //document.createElement('tr')
+        if(this.template.parentNode != null) {
+            this.template.parentNode.removeChild(this.template)
+        }
+        
         console.log(dino)
         tableRow.id = 'id-' + dino.id
         tableRow.dataset.id = dino.id
@@ -143,13 +147,15 @@ const app = {
     updateIDsList() {
         let newIds = []
         for(let i=1;i<this.table.childNodes.length;i++) {
+            
             console.log("child")
             const child = this.table.childNodes[i]
-            console.log(child)
-            console.log("child id",child.id)
-            if(child.id.includes('text')) {
+            if(child.id == undefined) {
                 continue
             }
+            console.log(child)
+            console.log("child id",child.id)
+            
             
             const idStr = child.id.replace('id-','')
             const id = parseInt(idStr)
@@ -163,5 +169,5 @@ const app = {
 app.init({
     formSelector: '#dino-form', 
     listSelector: 'tbody',
-    templateSelector: '.template'
+    templateSelector: '.dino.template'
 })
