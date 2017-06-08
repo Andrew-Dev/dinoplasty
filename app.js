@@ -68,6 +68,9 @@ const app = {
     moveDown(id) {
         const dinoRow = document.querySelector('#id-' + id)
         const rowBelow = dinoRow.nextSibling
+        if(rowBelow == null) {
+            return
+        }
         //this.deleteDino(id)
         console.log(dinoRow)
         console.log(rowBelow)
@@ -83,6 +86,9 @@ const app = {
     moveUp(id) {
         const dinoRow = document.querySelector('#id-' + id)
         const rowAbove = dinoRow.previousSibling
+        if(rowAbove == null || rowAbove.id.includes('text')) {
+            return
+        }
         //this.deleteDino(id)
         console.log(dinoRow)
         console.log(rowAbove)
