@@ -37,7 +37,7 @@ const app = {
 
         this.dinos[dino.id] = dino
         this.dinoIds.push(dino.id)
-        this.table.appendChild(this.renderListItem(dino))
+        this.table.insertBefore(listItem, this.table.firstChild)
 
         this.form.dinoName.value = null
 
@@ -52,6 +52,7 @@ const app = {
         const tableRow = document.createElement('tr')
         console.log(dino)
         tableRow.id = 'id-' + dino.id
+        tableRow.dataset.id = dino.id
         tableRow.setAttribute('class',dino.favorite)
         const htmlContent = `
             <td>${dino.name}</td>
@@ -119,6 +120,7 @@ const app = {
         this.dinoIds.splice(this.dinoIds.indexOf(id),1)
         const dinoRow = document.querySelector(`#id-${id}`)
         dinoRow.parentNode.removeChild(dinoRow)
+        localStorage.setItem('dinos',JSON.stringify(this.dinos))
         this.updateIDsList()
     },
     
