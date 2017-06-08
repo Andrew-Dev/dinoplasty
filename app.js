@@ -5,6 +5,7 @@ const app = {
         this.dinos = {}
         this.dinoIds = []
         this.table = document.querySelector(selectors.listSelector)
+        this.form = document.querySelector(selectors.formSelector)
         document
             .querySelector(selectors.formSelector)
             .addEventListener('submit', this.addDino.bind(this))
@@ -37,6 +38,8 @@ const app = {
         this.dinos[dino.id] = dino
         this.dinoIds.push(dino.id)
         this.table.appendChild(this.renderListItem(dino))
+
+        this.form.dinoName.value = null
 
         ++ this.max
 
