@@ -1,6 +1,6 @@
-const app = {
+class App {
 
-    init(selectors) {
+    constructor(selectors) {
         this.max = -1
         this.dinos = {}
         this.dinoIds = []
@@ -25,7 +25,7 @@ const app = {
                 this.table.appendChild(this.renderListItem(this.dinos[id]))
             }
         }
-    },
+    }
 
     addDinoFromForm(event) {
         event.preventDefault()
@@ -45,11 +45,11 @@ const app = {
         this.form.dinoName.value = null
 
         ++ this.max
-
+        
         localStorage.setItem('dinos',JSON.stringify(this.dinos))
         localStorage.setItem('ids',JSON.stringify(this.dinoIds))
         localStorage.setItem('max',this.max.toString())
-    },
+    }
 
     renderListItem(dino) {
         const tableRow = this.template.cloneNode(true) //document.createElement('tr')
@@ -83,7 +83,7 @@ const app = {
             localStorage.setItem('dinos',JSON.stringify(this.dinos))
         })
         return tableRow
-    },
+    }
 
     moveDown(id) {
         const dino = this.dinos[id]
@@ -108,7 +108,7 @@ const app = {
         rowBelow.id = tempID
         rowBelow.setAttribute('class',dino.favorite)
         this.updateIDsList()
-    },
+    }
 
     moveUp(id) {
         const dino = this.dinos[id]
@@ -136,7 +136,7 @@ const app = {
         rowAbove.id = tempID
         rowAbove.setAttribute('class',dino.favorite)
         this.updateIDsList()
-    },
+    }
 
     star(id) {
         const dinoRow = document.querySelector('#id-' + id)
@@ -149,7 +149,7 @@ const app = {
             this.dinos[id].favorite = 'star'
         }
         localStorage.setItem('dinos',JSON.stringify(this.dinos))
-    },
+    }
 
     deleteDino(id) {
         delete this.dinos[id]
@@ -158,7 +158,7 @@ const app = {
         dinoRow.parentNode.removeChild(dinoRow)
         localStorage.setItem('dinos',JSON.stringify(this.dinos))
         this.updateIDsList()
-    },
+    }
     
     getDinoByID(id) {
         for(let i=0;i<this.dinos.length;i++) {
@@ -167,7 +167,7 @@ const app = {
                 return dino
             }
         }
-    },
+    }
 
     updateIDsList() {
         let newIds = []
@@ -191,7 +191,7 @@ const app = {
     }
 }
 
-app.init({
+const app = new App({
     formSelector: '#dino-form', 
     listSelector: 'tbody',
     templateSelector: '.dino.template'
