@@ -63,13 +63,20 @@ const app = {
         tableRow.setAttribute('class',dino.favorite)
         const htmlContent = `
                 <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong><br>${dino.type}</td>
-                <td><span class="vbtn"><button class="button success" type="button" onclick="app.star('${dino.id}')"><i class="fa fa-heart-o" aria-hidden="true"></i></button></span></td>
+                <td><span class="vbtn"><button class="button warning" type="button" onclick="app.star('${dino.id}')"><i class="fa fa-heart-o" aria-hidden="true"></i></button></span></td>
                 <td><span class="vbtn"><button class="button" type="button" onclick="app.moveUp('${dino.id}')"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></span></td>
                 <td><span class="vbtn"><button class="button" type="button" onclick="app.moveDown('${dino.id}')"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></span></td>
                 <td><span class="vbtn"><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')"><i class="fa fa-trash-o" aria-hidden="true"></i></button></span></td>
         `
         tableRow.innerHTML = htmlContent
         dino.domObj = tableRow
+        tableRow.addEventListener('keypress', (event) => {
+            if(event.key === 'Enter') {
+                event.preventDefault()
+                event.target.blur()
+                console.log("enter")
+            }
+        });
         tableRow.addEventListener('input', (event) => {
             const rowDino = this.dinos[parseInt(event.target.dataset.id)]
             rowDino.name = event.target.textContent
