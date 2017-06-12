@@ -62,16 +62,17 @@ const app = {
         tableRow.dataset.id = dino.id
         tableRow.setAttribute('class',dino.favorite)
         const htmlContent = `
-            <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong><br>${dino.type}</td>
-            <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
-            <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
-            <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
-            <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
+                <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong><br>${dino.type}</td>
+                <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
+                <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
+                <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
+                <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
         `
         tableRow.innerHTML = htmlContent
         dino.domObj = tableRow
         tableRow.addEventListener('input', (event) => {
-            dino.name = event.target.textContent
+            const rowDino = this.dinos[parseInt(event.target.dataset.id)]
+            rowDino.name = event.target.textContent
             localStorage.setItem('dinos',JSON.stringify(this.dinos))
         })
         return tableRow
