@@ -6,7 +6,8 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
-        <link rel="stylesheet" href="app.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
         <div class="row">
@@ -16,7 +17,7 @@
                     <div class="input-group">
                         <input type="text" class="input-group-field" name="dinoName" placeholder="Name a dinosaur" autofocus required>
                         <div class="input-group-button">
-                            <button type="submit" class="button success">Add dino</button>
+                            <button type="submit" class="button success"><i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </div>
             <div class="row">
@@ -24,7 +25,7 @@
                     <legend>Dinosaur Type</legend>
                     <input type="radio" name="dinoType" value="Carnivore" id="carnivore" required><label for="carnivore">Carnivore</label>
                     <input type="radio" name="dinoType" value="Herbivore" id="herbivore"><label for="herbivore">Herbivore</label>
-                    <input type="radio" name="dinoType" value="Omnivore" id="omnivore"><label for="herbivore">Omnivore</label>
+                    <input type="radio" name="dinoType" value="Omnivore" id="omnivore"><label for="omnivore">Omnivore</label>
                 </fieldset>
                 </form>
             </div>
@@ -36,10 +37,10 @@
                     <thead>
                         <tr>
                         <th width="300">Dinosaur</th>
-                        <th width="100">Favorite</th>
-                        <th width="100">Move Up</th>
-                        <th width="110">Move Down</th>
-                        <th width="100">Delete</th>
+                        <th width="30">Heart</th>
+                        <th width="50">Up</th>
+                        <th width="50">Down</th>
+                        <th width="50">Delete</th>
                         </tr>
                         
                     </thead>

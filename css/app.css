@@ -5,3 +5,7 @@
 .template {
     visibility: hidden;
 }
+
+table .button {
+    margin-bottom: 0;
+}
