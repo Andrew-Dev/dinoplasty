@@ -32,6 +32,7 @@ const app = {
         const dino = {
             id: this.max + 1,
             name: event.target.dinoName.value,
+            type: event.target.dinoType.value,
             favorite: '',
         }
         
@@ -61,7 +62,7 @@ const app = {
         tableRow.dataset.id = dino.id
         tableRow.setAttribute('class',dino.favorite)
         const htmlContent = `
-            <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong></td>
+            <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong><br>${dino.type}</td>
             <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
             <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
             <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
