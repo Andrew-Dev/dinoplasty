@@ -10,7 +10,7 @@ const app = {
 
         document
             .querySelector(selectors.formSelector)
-            .addEventListener('submit', this.addDino.bind(this))
+            .addEventListener('submit', this.addDinoFromForm.bind(this))
             
         if(window.localStorage.getItem('ids') != null) {
             this.dinoIds = JSON.parse(window.localStorage.getItem('ids'))
@@ -27,7 +27,7 @@ const app = {
         }
     },
 
-    addDino(event) {
+    addDinoFromForm(event) {
         event.preventDefault()
         const dino = {
             id: this.max + 1,
@@ -73,9 +73,11 @@ const app = {
     },
 
     moveDown(id) {
+        const dino = this.dinos[id]
         const dinoRow = document.querySelector('#id-' + id)
         console.log(dinoRow)
         const rowBelow = dinoRow.nextSibling
+        const dinoBelow = this.dinos[parseInt(rowBelow.dataset.id)]
         console.log("row below")
         console.log(rowBelow)
         if(rowBelow == null || rowBelow.id.includes('text') || rowBelow == undefined) {
@@ -88,15 +90,23 @@ const app = {
         const tempID = dinoRow.id
         dinoRow.innerHTML = rowBelow.innerHTML
         dinoRow.id = rowBelow.id
+        dinoRow.setAttribute('class',dinoBelow.favorite)
         rowBelow.innerHTML = tempHTML
         rowBelow.id = tempID
+        rowBelow.setAttribute('class',dino.favorite)
         this.updateIDsList()
     },
 
     moveUp(id) {
+        const dino = this.dinos[id]
+        console.log(id)
+        console.log("dino")
+        console.log(dino)
         const dinoRow = document.querySelector('#id-' + id)
         console.log(dinoRow)
         const rowAbove = dinoRow.previousSibling
+        const dinoAbove = this.dinos[parseInt(rowAbove.dataset.id)]
+        console.log("dino above",dinoAbove)
         console.log(rowAbove)
         if(rowAbove == null || rowAbove.id.includes('text')) {
             return
@@ -108,8 +118,10 @@ const app = {
         const tempID = dinoRow.id
         dinoRow.innerHTML = rowAbove.innerHTML
         dinoRow.id = rowAbove.id
+        dinoRow.setAttribute('class',dinoAbove.favorite)
         rowAbove.innerHTML = tempHTML
         rowAbove.id = tempID
+        rowAbove.setAttribute('class',dino.favorite)
         this.updateIDsList()
     },
 
