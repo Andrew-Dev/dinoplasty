@@ -33,30 +33,95 @@
         </div>
         <div class="row">
             <div class="medium-8 medium-offset-2 column">
-                <table class="hover">
-                    <thead>
-                        <tr>
-                        <th width="300">Dinosaur</th>
-                        <th width="30">Heart</th>
-                        <th width="50">Up</th>
-                        <th width="50">Down</th>
-                        <th width="50">Delete</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        <tr class="dino template">
-                            <td class="dino-name"></td>
-                            <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
-                            <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
-                            <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
-                            <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
+                <ul class="tabs" data-tabs id="example-tabs">
+                    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">All Dinosaurs</a></li>
+                    <li class="tabs-title"><a href="#panel2">Carnivores</a></li>
+                    <li class="tabs-title"><a href="#panel3">Herbivores</a></li>
+                    <li class="tabs-title"><a href="#panel4">Omnivores</a></li>
+                </ul>
+                <div class="tabs-content" data-tabs-content="example-tabs">
+                    <div class="tabs-panel is-active" id="panel1">
+                        <table class="hover">
+                            <thead>
+                                <tr>
+                                    <th width="300">Dinosaur</th>
+                                    <th width="30">Heart</th>
+                                    <th width="50">Up</th>
+                                    <th width="50">Down</th>
+                                    <th width="50">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allTable">
+                                <tr class="dino template">
+                                    <td class="dino-name"></td>
+                                    <td><button class="button success" type="button" onclick="app.star('${dino.id}')">Favorite</button></td>
+                                    <td><button class="button" type="button" onclick="app.moveUp('${dino.id}')">Up</button></td>
+                                    <td><button class="button" type="button" onclick="app.moveDown('${dino.id}')">Down</button></td>
+                                    <td><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tabs-panel" id="panel2">
+                        <table class="hover">
+                            <thead>
+                                <tr>
+                                <th width="300">Dinosaur</th>
+                                <th width="30">Heart</th>
+                                <th width="50">Up</th>
+                                <th width="50">Down</th>
+                                <th width="50">Delete</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody id="cTable">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tabs-panel" id="panel3">
+                        <table class="hover">
+                            <thead>
+                                <tr>
+                                <th width="300">Dinosaur</th>
+                                <th width="30">Heart</th>
+                                <th width="50">Up</th>
+                                <th width="50">Down</th>
+                                <th width="50">Delete</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody id="hTable">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tabs-panel" id="panel4">
+                        <table class="hover">
+                            <thead>
+                                <tr>
+                                <th width="300">Dinosaur</th>
+                                <th width="30">Heart</th>
+                                <th width="50">Up</th>
+                                <th width="50">Down</th>
+                                <th width="50">Delete</th>
+                                </tr>
+                                
+                            </thead>
+                            <tbody id="oTable">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.tabs.min.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
         <script src="app.js"></script>
     </body>
 </html>
