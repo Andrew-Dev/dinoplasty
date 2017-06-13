@@ -52,8 +52,6 @@ class App {
                 this.oTable.appendChild(this.renderListItem(this.dinos[id]))
             }
         }
-
-
     }
 
     addDinoFromForm(event) {
@@ -78,10 +76,7 @@ class App {
         ++ this.max
         
         localStorage.setItem('dinos',JSON.stringify(this.dinos))
-        localStorage.setItem('ids',JSON.stringify(this.dinoIds))
-        localStorage.setItem('cIds',JSON.stringify(this.carnivoreIds))
-        localStorage.setItem('hIds',JSON.stringify(this.herbivoreIds))
-        localStorage.setItem('oIds',JSON.stringify(this.omnivoreIds))
+        this.saveAllIds()
         localStorage.setItem('max',this.max.toString())
     }
 
@@ -99,22 +94,27 @@ class App {
         }
     }
 
-    renderListItem(dino) {
+    renderListItem(dino,useAll) {
         const tableRow = this.template.cloneNode(true) //document.createElement('tr')
         if(this.template.parentNode != null) {
             this.template.parentNode.removeChild(this.template)
         }
-        
+        let tableId = dino.type
+        if(useAll === true) {
+            tableId = 'all'
+        }
         console.log(dino)
-        tableRow.id = 'id-' + dino.id
+        tableRow.id = 'id-' + dino.type + '-' + dino.id
         tableRow.dataset.id = dino.id
+        console.log("renderlistitem id",dino.id)
         tableRow.setAttribute('class',dino.favorite)
+
         const htmlContent = `
                 <td><strong><span data-id="${dino.id}" contenteditable="true">${dino.name}</span></strong><br>${dino.type}</td>
                 <td><span class="vbtn"><button class="button warning" type="button" onclick="app.star('${dino.id}')"><i class="fa fa-heart-o" aria-hidden="true"></i></button></span></td>
-                <td><span class="vbtn"><button class="button" type="button" onclick="app.moveUp('${dino.id}')"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></span></td>
-                <td><span class="vbtn"><button class="button" type="button" onclick="app.moveDown('${dino.id}')"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></span></td>
-                <td><span class="vbtn"><button class="button alert" type="button" onclick="app.deleteDino('${dino.id}')"><i class="fa fa-trash-o" aria-hidden="true"></i></button></span></td>
+                <td><span class="vbtn"><button class="button" type="button" onclick="app.moveUp('${dino.id}','${tableId}')"><i class="fa fa-arrow-up" aria-hidden="true"></i></button></span></td>
+                <td><span class="vbtn"><button class="button" type="button" onclick="app.moveDown('${dino.id}','${tableId}')"><i class="fa fa-arrow-down" aria-hidden="true"></i></button></span></td>
+                <td><span class="vbtn"><button class="button alert" type="button" onclick="app.deleteDino(${dino.id})"><i class="fa fa-trash-o" aria-hidden="true"></i></button></span></td>
         `
         tableRow.innerHTML = htmlContent
         dino.domObj = tableRow
@@ -122,7 +122,6 @@ class App {
             if(event.key === 'Enter') {
                 event.preventDefault()
                 event.target.blur()
-                console.log("enter")
             }
         });
         tableRow.addEventListener('input', (event) => {
@@ -135,13 +134,16 @@ class App {
 
     moveDown(id,tableId) {
         const dino = this.dinos[id]
-        const dinoRow = document.querySelector(tableId + ' #id-' + id)
+        let dinoRow = document.querySelector(tableId + ' #id-' + tableId + '-' + id)
+        if(tableId === 'all') {
+            dinoRow = document.querySelector('tr[data-id="' + id + '"]')
+        }
         console.log(dinoRow)
         const rowBelow = dinoRow.nextSibling
         const dinoBelow = this.dinos[parseInt(rowBelow.dataset.id)]
         console.log("row below")
         console.log(rowBelow)
-        if(rowBelow == null || rowBelow.id.includes('text') || rowBelow == undefined) {
+        if(!rowBelow || rowBelow.id.includes('text')) {
             return
         }
         //this.deleteDino(id)
@@ -155,21 +157,33 @@ class App {
         rowBelow.innerHTML = tempHTML
         rowBelow.id = tempID
         rowBelow.setAttribute('class',dino.favorite)
-        this.updateIDsList(idsList)
+        
+        if(tableId === 'Carnivore') {
+            this.updateIDsList(this.carnivoreIds)
+        } else if(tableId === 'Herbivore') {
+            this.updateIDsList(this.herbivoreIds)
+        } else if(tableId === 'Omnivvore') {
+            this.updateIDsList(this.omnivoreIds)
+        } else {
+            this.updateIDsList(this.ids)
+        }
     }
 
-    moveUp(id) {
+    moveUp(id,tableId) {
         const dino = this.dinos[id]
         console.log(id)
         console.log("dino")
         console.log(dino)
-        const dinoRow = document.querySelector('#id-' + id)
+        let dinoRow = document.querySelector(tableId + ' #id-' + tableId + '-' + id)
+        if(tableId === 'all') {
+            dinoRow = document.querySelector('tr[data-id="' + id + '"]')
+        }
         console.log(dinoRow)
         const rowAbove = dinoRow.previousSibling
         const dinoAbove = this.dinos[parseInt(rowAbove.dataset.id)]
         console.log("dino above",dinoAbove)
         console.log(rowAbove)
-        if(rowAbove == null || rowAbove.id.includes('text')) {
+        if(!rowAbove || rowAbove.id.includes('text')) {
             return
         }
         //this.deleteDino(id)
@@ -183,11 +197,21 @@ class App {
         rowAbove.innerHTML = tempHTML
         rowAbove.id = tempID
         rowAbove.setAttribute('class',dino.favorite)
-        this.updateIDsList(idsList)
+        
+        if(tableId === 'Carnivore') {
+            this.updateIDsList(this.carnivoreIds)
+        } else if(tableId === 'Herbivore') {
+            this.updateIDsList(this.herbivoreIds)
+        } else if(tableId === 'Omnivvore') {
+            this.updateIDsList(this.omnivoreIds)
+        } else {
+            this.updateIDsList(this.ids)
+        }
+
     }
 
     star(id) {
-        const dinoRows = document.querySelectorAll('#id-' + id)
+        const dinoRows = document.querySelectorAll('tr[data-id="' + id + '"]')
         dinoRows.forEach((dinoRow) => {
             const dinoClass = dinoRow.getAttribute('class')
             if(dinoClass.includes('star')) {
@@ -202,14 +226,39 @@ class App {
     }
 
     deleteDino(id) {
+        console.log("delete id",id)
+        const dino = this.dinos[id]
         delete this.dinos[id]
         this.dinoIds.splice(this.dinoIds.indexOf(id),1)
-        const dinoRow = document.querySelector(`#id-${id}`)
+        if(dino.type === 'Carnivore') {
+            this.carnivoreIds.splice(this.carnivoreIds.indexOf(id),1)
+            const dinoRow = document.querySelector('#id-' + dino.type + '-' + id)
+            dinoRow.parentNode.removeChild(dinoRow)
+            this.updateIDsList(this.carnivoreIds)
+        } else if(dino.type === 'Herbivore') {
+            this.herbivoreIds.splice(this.herbivoreIds.indexOf(id),1)
+            const dinoRow = document.querySelector('#id-' + dino.type + '-' + id)
+            dinoRow.parentNode.removeChild(dinoRow)
+            this.updateIDsList(this.herbivoreIds)
+        } else {
+            this.omnivoreIds.splice(this.omnivoreIds.indexOf(id),1)
+            const dinoRow = document.querySelector('#id-' + dino.type + '-' + id)
+            dinoRow.parentNode.removeChild(dinoRow)
+            this.updateIDsList(this.omnivoreIds)
+        }
+        const dinoRow = document.querySelector('tr[data-id="' + id + '"]')
         dinoRow.parentNode.removeChild(dinoRow)
         localStorage.setItem('dinos',JSON.stringify(this.dinos))
-        this.updateIDsList()
+        this.updateIDsList(this.ids)
     }
     
+    saveAllIds() {
+        localStorage.setItem('ids',JSON.stringify(this.dinoIds))
+        localStorage.setItem('cIds',JSON.stringify(this.carnivoreIds))
+        localStorage.setItem('hIds',JSON.stringify(this.herbivoreIds))
+        localStorage.setItem('oIds',JSON.stringify(this.omnivoreIds))
+    }
+
     getDinoByID(id) {
         for(let i=0;i<this.dinos.length;i++) {
             const dino = this.dinos[i]
@@ -232,16 +281,12 @@ class App {
             console.log("child id",child.id)
             
             
-            const idStr = child.id.replace('id-','')
+            const idStr = child.dataset.id
             const id = parseInt(idStr)
             newIds.push(id)
         }
         ids = newIds
-        localStorage.setItem('ids',JSON.stringify(this.dinoIds))
-        localStorage.setItem('hIds',JSON.stringify(this.herbivoreIds))
-        localStorage.setItem('cIds',JSON.stringify(this.carnivoreIds))
-        localStorage.setItem('oIds',JSON.stringify(this.omnivoreIds))
-
+        this.saveAllIds()
     }
 
     getDinoIDsByType(type) {
