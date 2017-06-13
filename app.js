@@ -175,11 +175,20 @@ class App {
         console.log(id)
         console.log("dino")
         console.log(dino)
-        let dinoRow = document.querySelector('#id-' + tableId + '-' + id)
+        let tableName = ''
+        if(tableId === 'Carnivore') {
+            tableName = '#cTable '
+        } else if(tableId === 'Herbivore') {
+            tableName = '#hTable '
+        } else if(tableId === 'Omnivore') {
+            tableName = '#oTable '
+        }
+
+        let dinoRow = document.querySelector(tableName + '#id-' + tableId + '-' + id)
         if(tableId === 'all') {
             dinoRow = document.querySelector('tr[data-id="' + id + '"]')
         }
-        console.log(dinoRow)
+        console.log("dinorow parent childnodes",dinoRow.parentElement.childNodes)
         const rowAbove = dinoRow.previousSibling
         console.log(rowAbove)
         if(!rowAbove) {
